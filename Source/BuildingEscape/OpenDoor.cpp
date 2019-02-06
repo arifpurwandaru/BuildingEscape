@@ -4,6 +4,9 @@
 #include "GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
+#include "Runtime/Engine/Classes/Components/PrimitiveComponent.h"
+
+#define VARIABELBERUBAH
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -22,6 +25,9 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
 	Owner = GetOwner();
 	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+	if (!PresurePlate) {
+		UE_LOG(LogTemp, Error, (TEXT("PresurePlate is Null in %s")), *GetOwner()->GetName())
+	}
 }
 
 void UOpenDoor::OpenTheDoor(){
@@ -38,7 +44,12 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (PresurePlate->IsOverlappingActor(ActorThatOpens)) {
+	//if (PresurePlate->IsOverlappingActor(ActorThatOpens)) {
+	//	OpenTheDoor();
+	//	LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	//}
+
+	if (GetTotalBeratYgAdaDiTriggerVolume() > 30.0f) {
 		OpenTheDoor();
 		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
 	}
@@ -46,5 +57,21 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay) {
 		CloseTheDoor();
 	}
+}
+
+float UOpenDoor::GetTotalBeratYgAdaDiTriggerVolume()
+{
+	float TotalMass = 0.0f;
+	TArray<AActor*> overlappingActor;
+	if (!PresurePlate) {
+		return TotalMass;
+	}
+	PresurePlate->GetOverlappingActors(VARIABELBERUBAH overlappingActor);
+
+	for (const auto& Aktor : overlappingActor) {
+		TotalMass += Aktor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+	}
+
+	return TotalMass;
 }
 

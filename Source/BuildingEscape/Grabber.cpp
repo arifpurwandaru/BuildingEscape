@@ -88,7 +88,6 @@ void UGrabber::SetupInputComponent()
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const{
 
 	FTwoVectors TracePoints = GetLineTracePoints();
-	//DrawDebugLine(GetWorld(), TracePoints.v1, TracePoints.v2, FColor(255, 0, 0), false, 0.f, 0.f, 10.f);
 
 	FCollisionQueryParams TraceParameter(FName(TEXT("")), false, GetOwner());
 
