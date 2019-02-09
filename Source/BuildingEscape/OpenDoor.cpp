@@ -31,7 +31,8 @@ void UOpenDoor::BeginPlay()
 }
 
 void UOpenDoor::OpenTheDoor(){
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
+	//Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
+	OnRequestMbukakLawang.Broadcast();
 }
 
 void UOpenDoor::CloseTheDoor() {
