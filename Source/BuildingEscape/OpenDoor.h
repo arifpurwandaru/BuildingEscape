@@ -7,7 +7,7 @@
 #include "Runtime/Engine/Classes/Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRequestMbukakLawang);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEventLawang);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
@@ -22,29 +22,25 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	void OpenTheDoor();
-	void CloseTheDoor();
-	
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	UPROPERTY(BlueprintAssignable)
-		FOnRequestMbukakLawang OnRequestMbukakLawang;
+		FEventLawang OnRequestMbukakLawang;
+
+
+	UPROPERTY(BlueprintAssignable)
+		FEventLawang OnNutupLawang;
 
 private:
-		UPROPERTY(VisibleAnywhere)
-		float OpenAngle = -90.0f;
-
 		UPROPERTY(EditAnywhere)
 			ATriggerVolume* PresurePlate = nullptr;
 
 		UPROPERTY(EditAnywhere)
-			float DoorCloseDelay = 1.f;
-		
-		float LastDoorOpenTime;
+			float BeratTotalBenBsMbukak = 30.0f;
+
 		AActor* Owner;
-		AActor* ActorThatOpens;
 
 		float GetTotalBeratYgAdaDiTriggerVolume();
 };

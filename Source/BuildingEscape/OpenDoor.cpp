@@ -24,19 +24,9 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (!PresurePlate) {
 		UE_LOG(LogTemp, Error, (TEXT("PresurePlate is Null in %s")), *GetOwner()->GetName())
 	}
-}
-
-void UOpenDoor::OpenTheDoor(){
-	//Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-	OnRequestMbukakLawang.Broadcast();
-}
-
-void UOpenDoor::CloseTheDoor() {
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
 }
 
 
@@ -45,19 +35,13 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	//if (PresurePlate->IsOverlappingActor(ActorThatOpens)) {
-	//	OpenTheDoor();
-	//	LastDoorOpenTime = GetWorld()->GetTimeSeconds();
-	//}
-
-	if (GetTotalBeratYgAdaDiTriggerVolume() > 30.0f) {
-		OpenTheDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	if (GetTotalBeratYgAdaDiTriggerVolume() > BeratTotalBenBsMbukak) {
+		OnRequestMbukakLawang.Broadcast();
+	}
+	else {
+		OnNutupLawang.Broadcast();
 	}
 
-	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay) {
-		CloseTheDoor();
-	}
 }
 
 float UOpenDoor::GetTotalBeratYgAdaDiTriggerVolume()
